@@ -1,40 +1,37 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
-#include "GameFramework/Pawn.h"
-#include "Components/StaticMeshComponent.h"
 
-UTankAimingComponent::UTankAimingComponent()
+
+void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	if (!Barrel) { return; }
 
-	
+	FVector OutLaunchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, StartLocation, HitLocation, LaunchSpeed, ESuggestProjVelocityTraceOption::DoNotTrace);
+
+	if (bHaveAimSolution)
+	{
+		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
+		UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
+
+		MoveBarrelTowards(AimDirection);
+	}
 }
 
-
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	
-	
-}
-
-
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	
-}
-
-void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Launching at %f"), LaunchSpeed);
-}
-
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	FRotator BarrelRotation = Barrel->GetForwardVector().Rotation();
+	FRotator AimAsRotation = AimDirection.Rotation();
+	FRotator DeltaRotation = AimAsRotation - BarrelRotation;
+
+	Barrel->Elevate(5);
 }
 

@@ -28,7 +28,10 @@ public:
 
 	//TODO Find sensible default value
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000.0f;
+	float LaunchSpeed = 40000.0f;
+
+	UFUNCTION(BlueprintCallable)
+	void Fire();
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
@@ -38,7 +41,4 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	
-	
 };

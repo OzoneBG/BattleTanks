@@ -11,17 +11,27 @@
 #include "TankTurret.h"
 #include "TankAimingComponent.generated.h"
 
+UENUM()
+enum class EFiringState : uint8
+{
+	Locked,
+	Aiming,
+	Reloading
+};
+
 UCLASS( ClassGroup=(TankComponents), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UTankBarrel* TankBarrelToSet, UTankTurret* TankTurretToSet);
+
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	void SetTurretReference(UTankTurret* TurretToSet);
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringState FiringState = EFiringState::Reloading;
 
 private:
 	UTankBarrel* Barrel = nullptr;

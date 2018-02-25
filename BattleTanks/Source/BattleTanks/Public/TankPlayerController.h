@@ -22,8 +22,6 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	ATank* GetControlledTank() const;
-
 	void AimTowardsCrosshair();
 
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
@@ -39,4 +37,8 @@ public:
 	float CrosshairYLocation = .33333f;
 
 	float LineTraceRange = 1000000.0f;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	ATank* GetControlledTank() const;
 };

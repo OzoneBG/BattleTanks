@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Tank.h"
 #include "GameFramework/PlayerController.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.generated.h"
 
 /**
@@ -41,4 +42,7 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable)
 	ATank* GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 };

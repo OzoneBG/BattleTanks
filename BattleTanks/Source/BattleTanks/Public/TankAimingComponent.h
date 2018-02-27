@@ -27,6 +27,12 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	UTankAimingComponent();
+
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* TankBarrelToSet, UTankTurret* TankTurretToSet);
 

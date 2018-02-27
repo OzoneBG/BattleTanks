@@ -2,6 +2,27 @@
 
 #include "TankAimingComponent.h"
 
+UTankAimingComponent::UTankAimingComponent()
+{
+	bWantsBeginPlay = true;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+
+	//TODO Handle Aiming and locked states
+}
+
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	Barrel = BarrelToSet;
@@ -38,12 +59,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
-
-	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (bIsReloaded)
+	if (FiringState != EFiringState::Reloading)
 	{
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+
 		FTransform Transform = Barrel->GetSocketTransform(FName("Projectile"));
 
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(

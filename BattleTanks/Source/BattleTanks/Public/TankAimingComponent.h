@@ -7,8 +7,10 @@
 #include "GameFramework/Pawn.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "TankAimingComponent.generated.h"
 
 UENUM()
@@ -30,6 +32,9 @@ public:
 
 	void AimAt(FVector HitLocation);
 
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 
@@ -38,8 +43,16 @@ private:
 
 	UTankTurret* Turret = nullptr;
 
+	double LastFireTime = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeInSeconds = 3;
+
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 40000.0f;
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	void MoveBarrelTowards(FVector AimDirection);
 };

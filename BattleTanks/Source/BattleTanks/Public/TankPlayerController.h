@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.generated.h"
@@ -40,9 +39,8 @@ public:
 	float LineTraceRange = 1000000.0f;
 
 protected:
-	UFUNCTION(BlueprintCallable)
-	ATank* GetControlledTank() const;
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
+
+	UTankAimingComponent* AimingComponent = nullptr;
 };

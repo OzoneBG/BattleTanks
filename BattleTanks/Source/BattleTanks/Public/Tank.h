@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
+#include "Engine/World.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Projectile.h"
@@ -19,20 +19,12 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	void AimAt(FVector HitLocation);
-
-	void BeginPlay() override;
-
 	//TODO Remove once firing is moved to aiming component
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 40000.0f;
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();
-
-protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
 	
 private:	
 	UPROPERTY(EditAnywhere, Category = Setup)

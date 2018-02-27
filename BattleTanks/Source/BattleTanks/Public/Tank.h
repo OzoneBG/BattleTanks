@@ -21,7 +21,9 @@ public:
 
 	void AimAt(FVector HitLocation);
 
-	//TODO Find sensible default value
+	void BeginPlay() override;
+
+	//TODO Remove once firing is moved to aiming component
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 40000.0f;
 

@@ -12,23 +12,14 @@ ATankPlayerController::ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
 	UTankAimingComponent* AimingComponent = Cast<UTankAimingComponent>(GetControlledTank()->GetComponentByClass(UTankAimingComponent::StaticClass()));
-
-	if (AimingComponent)
-	{
-		FoundAimingComponent(AimingComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Player Controlled can't find 'Aiming Component' at Begin Play!"));
-	}
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 	AimTowardsCrosshair();
 }
 

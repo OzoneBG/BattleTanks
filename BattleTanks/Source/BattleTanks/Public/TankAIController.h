@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
 #include "AIController.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.generated.h"
@@ -20,10 +19,11 @@ class BATTLETANKS_API ATankAIController : public AAIController
 public:
 	ATankAIController();
 
+	UPROPERTY(EditAnywhere, Category = "Config")
+	float AcceptanceRadius = 8000.0f;
+
 private:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-	float AcceptanceRadius = 3000.0f;
 };

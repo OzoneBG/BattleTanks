@@ -29,7 +29,7 @@ void UTankTrack::SetThrottle(float Throttle)
 
 void UTankTrack::DriveTrack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s: %s throttle at %f"), *GetOwner()->GetName(), *GetName(), CurrentThrottle);
+	//UE_LOG(LogTemp, Warning, TEXT("%s: %s throttle at %f"), *GetOwner()->GetName(), *GetName(), CurrentThrottle);
 
 	FVector ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	FVector ForceLocation = GetComponentLocation();

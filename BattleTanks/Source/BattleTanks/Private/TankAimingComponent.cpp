@@ -14,7 +14,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	if (!DoesHaveAmmo())
+	if (RoundsLeft <= 0)
 	{
 		FiringState = EFiringState::OutOfAmmo;
 	}
@@ -30,11 +30,6 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringState = EFiringState::Locked;
 	}
-}
-
-bool UTankAimingComponent::DoesHaveAmmo()
-{
-	return (CurrentAmmo > 0);
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -97,16 +92,16 @@ void UTankAimingComponent::Fire()
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
-
-		CurrentAmmo--;
+		RoundsLeft--;
 	}
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
 {
+	//TODO tolerance was 0.01 but quickfix to 0.1 made the AI shoot again. Have to investigate further
 	if (!ensure(Barrel)) { return false; }
 	auto BarrelForward = Barrel->GetForwardVector();
-	return !BarrelForward.Equals(AimDirection, 0.01); // vectors are equal
+	return !BarrelForward.Equals(AimDirection, 0.1);
 }
 
 EFiringState UTankAimingComponent::GetFiringState() const
@@ -114,7 +109,7 @@ EFiringState UTankAimingComponent::GetFiringState() const
 	return FiringState;
 }
 
-int32 UTankAimingComponent::GetAmmo() const
+int32 UTankAimingComponent::GetRoundsLeft() const
 {
-	return CurrentAmmo;
+	return RoundsLeft;
 }

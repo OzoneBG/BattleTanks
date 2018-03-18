@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "AIController.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "TankAIController.generated.h"
 
 /**
@@ -26,4 +27,9 @@ private:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnPossesedTankDeath();
 };

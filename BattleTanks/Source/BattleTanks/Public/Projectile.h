@@ -9,6 +9,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -31,6 +32,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float DestroyDelay = 10.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float ProjectileDamage = 10.f;
 
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 

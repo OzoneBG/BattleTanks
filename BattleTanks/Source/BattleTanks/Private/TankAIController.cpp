@@ -35,3 +35,23 @@ void ATankAIController::Tick(float DeltaTime)
 		AimingComponent->Fire();
 	}
 }
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+
+		if (!ensure(PossessedTank)) { return; }
+
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossesedTankDeath);
+	}
+}
+
+void ATankAIController::OnPossesedTankDeath()
+{
+	//if (!ensure(GetPawn())) { return; }
+	//GetPawn()->DetachFromControllerPendingDestroy();
+}
